@@ -7,12 +7,13 @@ var cursor_line = -1
 func _ready():
 	EditorInterface.get_script_editor().editor_script_changed.connect(_on_editor_script_changed)
 
+
 func _on_editor_script_changed(_script):
 	if script_editor:
 		script_editor.caret_changed.disconnect(_on_caret_changed)
 	script_editor = EditorInterface.get_script_editor().get_current_editor().get_base_editor()
 	script_editor.caret_changed.connect(_on_caret_changed)
-	printt("CHANGED", script_editor)
+
 
 func _on_caret_changed():
 	if not is_instance_valid(script_editor):
@@ -67,6 +68,7 @@ func try_complete(caret_index) -> void:
 			"@export ":
 				complete(caret_index, "@export var |")
 
+
 func complete(caret_index: int, line: String, replace := true):
 	var caret_column = line.find("|")
 	if replace:
@@ -75,6 +77,7 @@ func complete(caret_index: int, line: String, replace := true):
 	else:
 		script_editor.set_line(script_editor.get_caret_line(caret_index), line.replace("|", ""))
 		script_editor.set_caret_column(script_editor.get_caret_column() + 1, true, caret_index)
+
 
 func complete_end_add(caret_index: int, replace: String, with: String):
 	var line_num = script_editor.get_caret_line(caret_index)
@@ -99,8 +102,7 @@ func get_indentation(string: String) -> String:
 			break
 	return indentation
 
+
 func is_line_empty(line_num):
 	var line = script_editor.get_line(line_num).strip_edges()
 	return line == "" or line.begins_with("#")
-
-var a: float 
